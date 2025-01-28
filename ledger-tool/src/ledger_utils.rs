@@ -253,10 +253,13 @@ pub fn load_and_process_ledger(
     let (account_run_paths, account_snapshot_paths) =
         create_all_accounts_run_and_snapshot_dirs(&account_paths)
             .map_err(LoadAndProcessLedgerError::CreateAllAccountsRunAndSnapshotDirectories)?;
+    info!(
+        "FROM EVAN: account_run_paths: {:?}",
+        account_run_paths.clone()
+    );
     // From now on, use run/ paths in the same way as the previous account_paths.
     let account_paths = account_run_paths;
 
-    info!("FROM EVAN: account_run_paths: {:?}", account_run_paths);
     info!(
         "FROM EVAN: account_snapshot_paths: {:?}",
         account_snapshot_paths
