@@ -1487,7 +1487,9 @@ fn main() {
         | ("shred-meta", Some(_))
         | ("slot", Some(_)) => blockstore_process_command(&ledger_path, &matches),
         _ => {
+            info!("FROM EVAN: ledger_path from arg matches: {:?}", ledger_path);
             let ledger_path = canonicalize_ledger_path(&ledger_path);
+            info!("FROM EVAN: ledger_path canonicalized: {:?}", ledger_path);
 
             match matches.subcommand() {
                 ("genesis", Some(arg_matches)) => {
@@ -1832,6 +1834,14 @@ fn main() {
                         snapshot_type_str,
                         snapshot_slot,
                         output_directory.display()
+                    );
+
+                    info!(
+                        "FROM EVAN: Paths before load_and_process_ledger:\n
+                        ledger_path: {:?}\n
+                        snapshot_archive_path: {:?}\n
+                        incremental_snapshot_archive_path: {:?}",
+                        ledger_path, snapshot_archive_path, incremental_snapshot_archive_path
                     );
 
                     let (bank_forks, starting_snapshot_hashes) = load_and_process_ledger_or_exit(

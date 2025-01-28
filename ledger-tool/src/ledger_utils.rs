@@ -138,6 +138,12 @@ pub fn load_and_process_ledger(
             .join("snapshot")
     };
 
+    info!(
+        "FROM EVAN: blockstore.is_primary_access(): {:?}",
+        blockstore.is_primary_access()
+    );
+    info!("FROM EVAN: bank_snapshots_dir: {:?}", bank_snapshots_dir);
+
     let snapshot_halt_at_slot = if ignore_halt_at_slot_for_snapshot_loading {
         None
     } else {
@@ -238,11 +244,24 @@ pub fn load_and_process_ledger(
         vec![non_primary_accounts_path]
     };
 
+    info!(
+        "FROM EVAN: arg_matches account paths: {:?}",
+        arg_matches.value_of("account_paths")
+    );
+    info!("FROM EVAN: account_paths: {:?}", account_paths);
+
     let (account_run_paths, account_snapshot_paths) =
         create_all_accounts_run_and_snapshot_dirs(&account_paths)
             .map_err(LoadAndProcessLedgerError::CreateAllAccountsRunAndSnapshotDirectories)?;
     // From now on, use run/ paths in the same way as the previous account_paths.
     let account_paths = account_run_paths;
+
+    info!("FROM EVAN: account_run_paths: {:?}", account_run_paths);
+    info!(
+        "FROM EVAN: account_snapshot_paths: {:?}",
+        account_snapshot_paths
+    );
+    info!("FROM EVAN: account_paths is now: {:?}", account_paths);
 
     let (_, measure_clean_account_paths) = measure!(
         account_paths.iter().for_each(|path| {
